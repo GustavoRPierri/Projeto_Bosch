@@ -1,0 +1,31 @@
+MicroPython #Reimplementação da lingaugem python voltada para microcontroladores, sendo um subconjunto do python (não tendo todas as funcionalidades).
+
+pip install esptool # Se comunica e grava em binario com a memoria flash(ROM) dos microcontroladores, usado pra gravar a imagem do micropython no esp32.
+
+esptool.exe --chip esp32 --port COM3 erase_flash # Limpa a memoria flash do esp32
+
+esptool.exe --chip esp32 --port COM3 --baud 115200  write_flash -z 0x1000 esp32-idf3-20191220-v1.12.bin # Grava a imagem do micropython na placa
+
+pip install adafruit-ampy # Manipular arquivos e executar códigos em uma Placa MicroPython, em sua conexão serial. 
+
+ampy --port COM3 ls # Ver todos os arquivos .py que estão dentro do Microcontrolador.
+
+pip install jupyter # Ambiente de desenvolvimento usado para programar dentro do micropython.
+
+git clone https://github.com/goatchurchprime/jupyter_micropython_kernel.git (git) # Pegar os arquivos de instalçao do kernel do micropython
+
+pip install -e jupyter_micropython_kernel # Instala essa biblioteca no python.
+ou 
+python setup.py install (dentro do diretório do driver da comunidade clonado)
+
+python -m jupyter_micropython_kernel.install #Instale o kernel no próprio jupyter.
+
+jupyter kernelspec list # Vê todos os kernels que o jupyter possui
+
+jupyter notebook # Abre o diretorio do jupyter na pasta que deseja salvar ou abrir um notebook jupyter
+
+%serialconnect to -port=COM1 -baud=115200 (jupyter) - Só se conecta com a 'COM1' por conta de erros de driver do windows.
+Sendo preciso mudar no gerenciamento de dispositivos o numero da 'COM'. # Conecta o kernel do jupyter com a placa esp32.
+
+Drive do display Oled = ssd1306
+
