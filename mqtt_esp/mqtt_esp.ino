@@ -10,39 +10,39 @@ const char* mqttUser = "broker"; // NOME DO BROKER.
 const char* mqttPassword = "5081"; // SENHA DO BROKER.
 WiFiClient espClient;
 PubSubClient client(espClient);
-String msg,n = "chegou";
+String msg, n = "chegou";
 
 void setup()
 {
   Serial.begin(115200); // CONEXÃO COM O MONITOR SERIAL(PARA IR MONITORANDO O QUE ESTA OCORRENDO DENTRO DA PLACA).
-  
+
   wifi(); // CHAMA A FUNÇÃO WIFI.
-  
+
   client.setServer(mqttServer, mqttPort); // PASSA OS PARAMETROS DO SERVIDOR MQTT PARA A FUNÇÃO DE CONFIGURAÇÃO.
 }
 
 void loop()
 {
-  if(n == "chegou")
+  if (n == "chegou")
   {
     conecta_publisher();
-    
+
     if (!client.connected()) {
       conecta_publisher(); //Faz a conexao com o broker MQTT
     }
-  
+
     Publisher();
   }
-  
-  if(n == "enviou")
+
+  if (n == "enviou")
   {
     conecta_subscribe();
-    
-    if (!client.connected()) 
+
+    if (!client.connected())
     {
       conecta_subscribe(); //Faz a conexao com o broker MQTT
     }
-     
+
     client.setCallback(Subscribe);
     client.loop();
   }
@@ -59,10 +59,10 @@ void  wifi() // CONECTA COM A INTERNET.
   Serial.println("Conectado na rede WiFi!");
 }
 
-String Subscribe(char* topic, byte* payload, unsigned int length) 
-{ 
+void Subscribe(char* topic, byte* payload, unsigned int length)
+{
   //obtem a string do payload recebido
-  for(int i = 0; i < length; i++) 
+  for (int i = 0; i < length; i++)
   {
     char c = (char)payload[i];
     msg += c;
@@ -70,7 +70,7 @@ String Subscribe(char* topic, byte* payload, unsigned int length)
 
   n = "chegou";
   Serial.println(msg);
-  return msg,n;
+  //return msg,n;
 }
 
 String Publisher()
