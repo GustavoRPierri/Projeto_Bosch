@@ -26,3 +26,4 @@ time.sleep(4)
 cliente.loop_stop()
 
 cliente.disconnect() # DISCONECTA DO BROKER.
+

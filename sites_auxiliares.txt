@@ -1,5 +1,11 @@
-https://www.eclipse.org/paho/index.php?page=clients/python/docs/index.php # DOCUMENTAÇÃO DO PAHO (PYTHON)
+https://www.eclipse.org/paho/index.php?page=clients/python/docs/index.php # DOCUMENTAÇÃO DA BIBLIOTECA 'paho'(PYTHON)
+
+https://www.youtube.com/watch?v=vT4FTRgipOM&list=PLk0D2S-fqJ7aXM3PG0cgXCVcfgbdMsl7- # VIDEOS UTILIZANDO A BIBLIOTECA 'paho'
 
 http://www.steves-internet-guide.com/mqtt-python-callbacks/ # ENTENDENDO CALLBACK
 
 http://www.steves-internet-guide.com/loop-python-mqtt-client/ # ENTENDENDO LOOP
+
+http://www.steves-internet-guide.com/into-mqtt-python-client/ # PUBLICANDO E SUBSCREVENDO COM O 'paho'(PYTHON)
+
+https://pubsubclient.knolleary.net/api # DOCUMENTAÇÃO DA BIBLIOTECA 'pubsubclient.h'(C)
