@@ -1,0 +1,5 @@
+pip install esptool # Se comunica e grava em binario na memoria flash(ROM) dos microcontroladores.
+
+esptool.exe --chip esp32 --port COM3 erase_flash # Limpa a memoria flash do esp32.
+
+esptool.exe --chip esp32 --port COM3 --baud 115200  write_flash -z arquivo.bin # Grava uma imagem na placa
