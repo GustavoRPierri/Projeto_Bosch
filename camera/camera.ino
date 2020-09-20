@@ -4,8 +4,8 @@
 #define CAM_PIN_PWDN    -1 //power down is not used
 #define CAM_PIN_RESET   -1 //software reset will be performed
 #define CAM_PIN_XCLK    21
-#define CAM_PIN_SIOD    26
-#define CAM_PIN_SIOC    27
+#define CAM_PIN_SIOD    26 //SDA
+#define CAM_PIN_SIOC    27 //SCL
 
 #define CAM_PIN_D7      35
 #define CAM_PIN_D6      34

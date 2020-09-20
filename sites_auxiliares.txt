@@ -9,3 +9,6 @@ http://www.steves-internet-guide.com/loop-python-mqtt-client/ # ENTENDENDO LOOP
 http://www.steves-internet-guide.com/into-mqtt-python-client/ # PUBLICANDO E SUBSCREVENDO COM O 'paho'(PYTHON)
 
 https://pubsubclient.knolleary.net/api # DOCUMENTAÇÃO DA BIBLIOTECA 'pubsubclient.h'(C)
+
+https://www.journaldev.com/15539/python-mysql-example-tutorial # PYTHON + XAMPP
+
