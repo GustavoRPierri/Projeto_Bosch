@@ -1,3 +1,5 @@
+https://loboris.eu/ESP32/ESP32-CAM%20Product%20Specification.pdf # DATASHEET ESP32-CAM 
+
 https://www.eclipse.org/paho/index.php?page=clients/python/docs/index.php # DOCUMENTAÇÃO DA BIBLIOTECA 'paho'(PYTHON)
 
 https://www.youtube.com/watch?v=vT4FTRgipOM&list=PLk0D2S-fqJ7aXM3PG0cgXCVcfgbdMsl7- # VIDEOS UTILIZANDO A BIBLIOTECA 'paho'
@@ -11,4 +13,5 @@ http://www.steves-internet-guide.com/into-mqtt-python-client/ # PUBLICANDO E SUB
 https://pubsubclient.knolleary.net/api # DOCUMENTAÇÃO DA BIBLIOTECA 'pubsubclient.h'(C)
 
 https://www.journaldev.com/15539/python-mysql-example-tutorial # PYTHON + XAMPP
+
 
