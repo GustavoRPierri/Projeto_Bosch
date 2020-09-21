@@ -18,3 +18,7 @@ https://www.journaldev.com/15539/python-mysql-example-tutorial # PYTHON + XAMPP
 
 https://pymysql.readthedocs.io/en/latest/modules/cursors.html # DOCUMENTAÇÃO DA BIBLIOTECA 'pymysql'(PYTHON)
 
+https://github.com/theeraphong0/ESP32Cam_QRCode_Scanner/blob/master/QRCode_Recognition.ino # CODIGO 1 PARA LER QRCODE COM ESP32-CAM 
+https://www.youtube.com/watch?v=Sd6OheY_A7k # VIDEO DO CODIGO 1
+
+https://github.com/ThaiEasyElec/ESPIno32CAM/blob/826abe7de6c3f56187d94f7f9ac79a449abc0500/examples/Ex_QRCode_Recognition/Ex_QRCode_Recognition.ino # CODIGO 2 PARA LER QRCODE COM ESP32-CAM
