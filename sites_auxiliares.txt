@@ -12,6 +12,9 @@ http://www.steves-internet-guide.com/into-mqtt-python-client/ # PUBLICANDO E SUB
 
 https://pubsubclient.knolleary.net/api # DOCUMENTAÇÃO DA BIBLIOTECA 'pubsubclient.h'(C)
 
+https://www.youtube.com/watch?v=R2HrwSQ6EPM&list=PLHz_AreHm4dkBs-795Dsgvau_ekxg8g1r&index=3 # CRIANDO SERVIDOR SQL PELO XAMPP E CONECTANDO COM O SQL WORKSTATION
+
 https://www.journaldev.com/15539/python-mysql-example-tutorial # PYTHON + XAMPP
 
+https://pymysql.readthedocs.io/en/latest/modules/cursors.html # DOCUMENTAÇÃO DA BIBLIOTECA 'pymysql'(PYTHON)
 
