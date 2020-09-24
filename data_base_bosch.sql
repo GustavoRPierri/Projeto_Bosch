@@ -1,6 +1,6 @@
 CREATE DATABASE galpao_bosch;
 
-use galpao_bosch;
+USE galpao_bosch;
 
 CREATE TABLE GALPAO(
 	ID bigint(7) PRIMARY KEY AUTO_INCREMENT,
@@ -8,8 +8,10 @@ CREATE TABLE GALPAO(
     QUANTIDADE int
     );
     
-DESCRIBE galpao;
+DESCRIBE GALPAO;
 
-SELECT * FROM galpao;
+SELECT * FROM GALPAO;
 
-DROP DATABASE galpão_bosch;
+INSERT INTO GALPAO(produto,quantidade) VALUES('MARTELETE','3');
+
+SELECT QUANTIDADE FROM GALPAO WHERE PRODUTO = 'BROCA';
