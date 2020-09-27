@@ -1,5 +1,4 @@
 #!pip install PyMySQL
-
 import pymysql
 import time
 import pandas as pd
@@ -18,3 +17,4 @@ x = df.iloc[0,0]
 def desconectar():
     cur.close()
     conn.close()
+
