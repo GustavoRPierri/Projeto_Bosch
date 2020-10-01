@@ -69,14 +69,10 @@ client.subscribe("recebe")
 
 ############################## PROCURANDO NO BANCO DE DADOS ############################## 
 L = []
-
+ 
 time.sleep(1) # TEMPO QUE DEMORA PARA FAZER A CONEXAO COM O BANCO DE DADOS
 
-while(1):
-    
-    time.sleep(10)
-    client.publish("recebe","BROCA")
-    
+while(1):  
     if len(L) >= 1: 
         print(L[0])
         df = pd.read_sql("SELECT QUANTIDADE FROM GALPAO WHERE PRODUTO = '%s'" % L[0], conn)    

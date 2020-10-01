@@ -4,7 +4,7 @@
 //'Adafruit BusIO' biblioteca para baixar
 
 // Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
-Adafruit_SSD1306 display(128, 32);
+Adafruit_SSD1306 display(128, 64);
 
 void setup() {
   Wire.begin(14,15,1000000);
@@ -19,7 +19,7 @@ void setup() {
 
   display.setTextSize(1);
   display.setTextColor(WHITE);
-  display.setCursor(10, 10);
+  display.setCursor(0, 0);
   // Display static text
   display.println("Hello, world!");
   display.display(); 
