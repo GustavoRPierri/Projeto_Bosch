@@ -9,6 +9,7 @@ const int mqttPort = 1883; // PORTA DE REDE ONDE IRA SE COMUNICAR COM O SERVIDOR
 const char* mqttUser = "broker"; // NOME DO BROKER.
 const char* mqttPassword = "5081"; // SENHA DO BROKER.
 String msg;
+String L[4];
 
 void setup()
 {
@@ -64,11 +65,21 @@ void broker()
 
 void Subscribe(char* topic, byte* payload, unsigned int length)
 {
+  int x = 0;
   //obtem a string do payload recebido
   for (int i = 0; i < length; i++)
   {
-    char c = (char)payload[i];
-    msg += c;
+    char c = (char)payload[i]; // broca;10;10/20/30;12:30:12:00;
+    if (c == ';'){
+      L[x] = msg;
+      msg = "";
+      x++; 
+    }
+    else{
+      msg += c;
+    }
   }
-  Serial.println(msg);
+  for(int i = 0;i <= 3;i++){
+    Serial.println(L[i]);  
+  }
 }
