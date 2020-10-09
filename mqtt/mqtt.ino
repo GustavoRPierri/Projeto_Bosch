@@ -116,7 +116,7 @@ void broker()
     if (Client.connect("ESP32Client", "broker", "5081"))
     {
       Serial.println("Conectado ao broker!");
-      Client.subscribe("topico_teste");
+      Client.subscribe("envia");
     }
     else
     {
@@ -201,6 +201,7 @@ void camera()
     if (res.status) //Se conseguir decodificar a imagem mostra os dados na tela
     { 
        leitura = res.payload;//Variável para mostrar os dados contidos no QR Code
+       Client.publish("recebe",(char*)leitura.c_str());
        Serial.println();
        Serial.println(leitura);  //Mostra os dados no monitor serial
     }

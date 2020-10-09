@@ -10,7 +10,7 @@ const char* mqttUser = "broker"; // NOME DO BROKER.
 const char* mqttPassword = "5081"; // SENHA DO BROKER.
 WiFiClient espClient;
 PubSubClient client(espClient);
-String msg, n = "chegou";
+String msg, n = "chegou",m = "gustavo";
 
 void setup()
 {
@@ -75,7 +75,7 @@ void Subscribe(char* topic, byte* payload, unsigned int length)
 
 String Publisher()
 {
-  client.publish("topico_teste", "oi");
+  client.publish("topico_teste", (char*)m.c_str());
   Serial.println("Mensagem enviada com sucesso...");
   n = "enviou";
 
