@@ -1,22 +1,10 @@
-#include <WiFi.h> // CHAMA A BIBLIOTECA COM FUNÇÕES PARA CONECTAR COM O WIFI.
-#include <PubSubClient.h>
-
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-
+//Bibliotecas utilizadas
 #include "ESPino32CAM.h"
 #include "ESPino32CAM_QRCode.h"
-
-WiFiClient espClient; // CRIA O CLIENTE QUE VAI SE CONECTAR AO WIFI.
-PubSubClient Client(espClient); // CRIA O CLIENTE QUE VAI SE CONECTAR AO BROKER.
-Adafruit_SSD1306 display(128, 64);
-
+ 
 ESPino32CAM cam;   //Objeto para captura de imagem
 ESPino32QRCode qr; //Objeto para decoficação da imagem
-String msg,leitura;
-String L[4];
-
+ 
 //Define os pinos da câmera
 #define PWDN_GPIO_NUM     32
 #define RESET_GPIO_NUM    -1
@@ -35,14 +23,12 @@ String L[4];
 #define HREF_GPIO_NUM     23
 #define PCLK_GPIO_NUM     22
 #define flash 4
-
-void setup()
-{
-  Serial.begin(115200); // CONEXÃO COM O MONITOR SERIAL(PARA IR MONITORANDO O QUE ESTA OCORRENDO DENTRO DA PLACA).
-  wifi(); // CHAMA A FUNÇÃO WIFI.
-  Client.setServer("192.168.15.3",1883); // PASSA OS PARAMETROS DO SERVIDOR MQTT PARA A FUNÇÃO DE CONFIGURAÇÃO.
-  Client.setCallback(Subscribe);
-  broker();
+ 
+void setup() {
+   
+  Serial.begin(115200);
+  Serial.println("Leitor de QR Code");
+  //Define pino do flash
   pinMode(flash,OUTPUT);
   digitalWrite(flash,LOW);//Desliga o flash
      
@@ -73,109 +59,27 @@ void setup()
   config.fb_count = 1;
    
   esp_err_t err = esp_camera_init(&config); //Inicialização da câmera
+   
   if (err != ESP_OK) {
+     
     Serial.printf("O início da câmera falhou com erro 0x%x", err);//Informa erro se a câmera não for iniciada corretamente
     delay(1000);
-    ESP.restart();//Reinicia o ESP 
+    ESP.restart();//Reinicia o ESP
+     
   }
+ 
   //Inicializa o objeto de decodificação
   qr.init(&cam);
   sensor_t *s = cam.sensor();
   s->set_framesize(s, FRAMESIZE_CIF);
   s->set_whitebal(s, true);
+   
+  Serial.println();
+  Serial.println("Aguardando código"); 
+ 
 }
-
+ 
 void loop()
-{ 
-  wifi();
-  broker();
-  Client.loop();
-  camera();
-}
-
-void  wifi() // CONECTA COM A INTERNET.
-{
-  if (WiFi.status() == WL_CONNECTED) {
-     return;
-  }
-  
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    WiFi.begin("metralha", "MAXMEL2013");
-    delay(500);
-    Serial.println("Iniciando conexao com a rede WiFi..");
-  }
-  Serial.println("Conectado na rede WiFi!");
-}
-
-void broker()
-{
-  while(!Client.connected())
-  {
-    Serial.println("Conectando ao broker...");
-    if (Client.connect("ESP32Client", "broker", "5081"))
-    {
-      Serial.println("Conectado ao broker!");
-      Client.subscribe("topico_teste");
-    }
-    else
-    {
-      Serial.println("Falha na conexao ao broker - Estado: ");
-      Serial.print(Client.state());
-      delay(2000);
-      Serial.println("Nova tentativa de conexao:");
-      delay(3000);
-    }
-  }
-}
-
-void Subscribe(char* topic, byte* payload, unsigned int length)
-{
-  int x = 0;
-  //obtem a string do payload recebido
-  for (int i = 0; i < length; i++)
-  {
-    char c = (char)payload[i]; // broca;10;10/20/30;12:30:12:00;
-    if (c == ';'){
-      L[x] = msg;
-      msg = "";
-      x++; 
-    }
-    else{
-      msg += c;
-    }
-  } 
-  for(int i = 0;i <= 3;i++){
-    Serial.println(L[i]);  
-  }
-
-  Display();
-}
-
-void Display()
-{
-  Wire.begin(14,15);
-
-  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
-    Serial.println(F("SSD1306 allocation failed"));
-    for(;;);
-  }
-  delay(2000);
-  display.clearDisplay();
-
-  display.setTextSize(1);
-  display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  // Display static text
-  display.println(L[0]);
-  display.println(L[1]);
-  display.println(L[2]);
-  display.println(L[3]);
-  display.println(L[4]);
-  display.display(); 
-}
-
-void camera()
 {
   unsigned long pv_time  = millis();
   camera_fb_t *fb = cam.capture(); //Captura a imagem
@@ -200,7 +104,7 @@ void camera()
      
     if (res.status) //Se conseguir decodificar a imagem mostra os dados na tela
     { 
-       leitura = res.payload;//Variável para mostrar os dados contidos no QR Code
+       String leitura = "Código QR Lido: " + res.payload;//Variável para mostrar os dados contidos no QR Code
        Serial.println();
        Serial.println(leitura);  //Mostra os dados no monitor serial
     }
