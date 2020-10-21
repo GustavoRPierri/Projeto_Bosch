@@ -5,7 +5,7 @@ import time
 import pandas as pd
 import threading
 import paho.mqtt.client as mqtt
-
+from sqlalchemy.exc import DatabaseError, InterfaceError
 ############################## CONEXÃO COM O XAMPP ############################## 
 
 global var
@@ -75,10 +75,14 @@ time.sleep(1) # TEMPO QUE DEMORA PARA FAZER A CONEXAO COM O BANCO DE DADOS
 while(1):  
     if len(L) >= 1: 
         print(L[0])
-        df = pd.read_sql("SELECT * FROM GALPAO WHERE PRODUTO = '%s'" % L[0], conn)
-        prod = df.iloc[0,1]
-        qnt = str(df.iloc[0,2])
-        data = str(df.iloc[0,3])
-        hora = str(df.iloc[0,4])[7:]
-        client.publish("envia", prod + ';' + qnt + ';' + data + ';' + hora + ';')
-        L = []
+        try:
+            df = pd.read_sql("SELECT * FROM GALPAO WHERE PRODUTO = '%s'" % L[0], conn)
+            prod = df.iloc[0,1]
+            qnt = str(df.iloc[0,2])
+            data = str(df.iloc[0,3])
+            hora = str(df.iloc[0,4])[7:]
+            client.publish("envia", prod + ';' + qnt + ';' + data + ';' + hora + ';')
+            L = []
+        except (DatabaseError, InterfaceError,IndexError):
+            client.publish("envia","Nao encontrado;")
+            L = []

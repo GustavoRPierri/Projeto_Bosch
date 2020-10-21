@@ -38,7 +38,7 @@ String L[4];
 
 void setup()
 {
-  Serial.begin(115200); // CONEXÃO COM O MONITOR SERIAL(PARA IR MONITORANDO O QUE ESTA OCORRENDO DENTRO DA PLACA).
+  Display();
   wifi(); // CHAMA A FUNÇÃO WIFI.
   Client.setServer("192.168.15.3",1883); // PASSA OS PARAMETROS DO SERVIDOR MQTT PARA A FUNÇÃO DE CONFIGURAÇÃO.
   Client.setCallback(Subscribe);
@@ -103,28 +103,44 @@ void  wifi() // CONECTA COM A INTERNET.
   {
     WiFi.begin("metralha", "MAXMEL2013");
     delay(500);
-    Serial.println("Iniciando conexao com a rede WiFi..");
+    display.setTextColor(WHITE,BLACK);
+    display.setCursor(0, 0);
+    display.println("Conectando WiFi...");
+    display.setCursor(0, 8);
+    display.println("                    ");
+    display.display(); 
   }
-  Serial.println("Conectado na rede WiFi!");
+  display.setTextColor(WHITE,BLACK);
+  display.setCursor(0, 8);
+  display.println("WiFi = ok");
+  display.display();
+  delay(1000);
 }
 
 void broker()
 {
   while(!Client.connected())
   {
-    Serial.println("Conectando ao broker...");
+    display.setTextColor(WHITE,BLACK);
+    display.setCursor(0, 0);
+    display.println("Conectando Broker...");
+    display.setCursor(0, 8);
+    display.println("                    ");
+    display.display(); 
     if (Client.connect("ESP32Client", "broker", "5081"))
     {
-      Serial.println("Conectado ao broker!");
       Client.subscribe("envia");
+      display.setTextColor(WHITE,BLACK);
+      display.setCursor(0, 8);
+      display.println("Broker = ok");
+      display.display();
+      delay(1000); 
     }
     else
     {
       Serial.println("Falha na conexao ao broker - Estado: ");
       Serial.print(Client.state());
-      delay(2000);
-      Serial.println("Nova tentativa de conexao:");
-      delay(3000);
+      delay(1000);
     }
   }
 }
@@ -145,34 +161,23 @@ void Subscribe(char* topic, byte* payload, unsigned int length)
       msg += c;
     }
   } 
-  for(int i = 0;i <= 3;i++){
-    Serial.println(L[i]);  
-  }
 
-  Display();
+  display.setTextColor(WHITE,BLACK);
+  display.setCursor(0, 16);
+  for(int i = 0;i < (sizeof L / sizeof *L);i++){
+    display.println(L[i]+"         ");
+  }
+  display.display(); 
 }
 
 void Display()
 {
   Wire.begin(14,15);
-
-  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
-    Serial.println(F("SSD1306 allocation failed"));
-    for(;;);
-  }
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);// Address 0x3D for 128x64
   delay(2000);
   display.clearDisplay();
-
   display.setTextSize(1);
   display.setTextColor(WHITE);
-  display.setCursor(0, 0);
-  // Display static text
-  display.println(L[0]);
-  display.println(L[1]);
-  display.println(L[2]);
-  display.println(L[3]);
-  display.println(L[4]);
-  display.display(); 
 }
 
 void camera()
@@ -181,7 +186,6 @@ void camera()
   camera_fb_t *fb = cam.capture(); //Captura a imagem
   if (!fb)
   {
-    Serial.println("Falha na captura da imagem");
     return;
   }
   dl_matrix3du_t *rgb888, *rgb565;
@@ -202,12 +206,18 @@ void camera()
     { 
        leitura = res.payload;//Variável para mostrar os dados contidos no QR Code
        Client.publish("recebe",(char*)leitura.c_str());
-       Serial.println();
-       Serial.println(leitura);  //Mostra os dados no monitor serial
+       display.setTextColor(WHITE,BLACK);
+       display.setCursor(0, 8);
+       display.println("QR code lido!");
+       display.display();
     }
     else{ //Se não aguarda receber código 
-       Serial.println();
-       Serial.println("Aguardando código"); 
+       display.setTextColor(WHITE,BLACK);
+       display.setCursor(0, 8);
+       display.println("                    ");
+       display.setCursor(0, 0);
+       display.println("Aguardando QR code...");
+       display.display(); 
      }
     } 
   cam.clearMemory(image_rgb); //Apaga imagem para receber uma nova imagem

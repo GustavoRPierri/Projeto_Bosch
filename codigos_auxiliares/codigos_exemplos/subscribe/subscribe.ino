@@ -1,7 +1,7 @@
 #include <ESP8266WiFi.h> 
 #include <PubSubClient.h>
 
-#define pinBotao1 12  //D6
+#define pinLED1 2  //GP2 ESP-01
 
 //WiFi
 const char* SSID = "NET_2G517AFC";                // SSID / nome da rede WiFi que deseja se conectar
@@ -12,28 +12,28 @@ WiFiClient wifiClient;
 const char* BROKER_MQTT = "iot.eclipse.org"; //URL do broker MQTT que se deseja utilizar
 int BROKER_PORT = 1883;                      // Porta do Broker MQTT
 
-#define ID_MQTT  "BCI01"            //Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. 
-#define TOPIC_PUBLISH "BCIBotao1"    //Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.
+#define ID_MQTT  "BCI02"             //Informe um ID unico e seu. Caso sejam usados IDs repetidos a ultima conexão irá sobrepor a anterior. 
+#define TOPIC_SUBSCRIBE "BCIBotao1"   //Informe um Tópico único. Caso sejam usados tópicos em duplicidade, o último irá eliminar o anterior.
 PubSubClient MQTT(wifiClient);        // Instancia o Cliente MQTT passando o objeto espClient
 
 //Declaração das Funções
 void mantemConexoes();  //Garante que as conexoes com WiFi e MQTT Broker se mantenham ativas
 void conectaWiFi();     //Faz conexão com WiFi
 void conectaMQTT();     //Faz conexão com Broker MQTT
-void enviaPacote();     //
+void recebePacote(char* topic, byte* payload, unsigned int length);
 
 void setup() {
-  pinMode(pinBotao1, INPUT_PULLUP);         
+  pinMode(pinLED1, OUTPUT);         
 
   Serial.begin(115200);
 
   conectaWiFi();
-  MQTT.setServer(BROKER_MQTT, BROKER_PORT);   
+  MQTT.setServer(BROKER_MQTT, BROKER_PORT);  
+  MQTT.setCallback(recebePacote); 
 }
 
 void loop() {
   mantemConexoes();
-  enviaValores();
   MQTT.loop();
 }
 
@@ -74,6 +74,7 @@ void conectaMQTT() {
         Serial.println(BROKER_MQTT);
         if (MQTT.connect(ID_MQTT)) {
             Serial.println("Conectado ao Broker com sucesso!");
+            MQTT.subscribe(TOPIC_SUBSCRIBE);
         } 
         else {
             Serial.println("Noo foi possivel se conectar ao broker.");
@@ -83,30 +84,22 @@ void conectaMQTT() {
     }
 }
 
-void enviaValores() {
-static bool estadoBotao1 = HIGH;
-static bool estadoBotao1Ant = HIGH;
-static unsigned long debounceBotao1;
+void recebePacote(char* topic, byte* payload, unsigned int length) 
+{
+    String msg;
 
-  estadoBotao1 = digitalRead(pinBotao1);
-  if (  (millis() - debounceBotao1) > 30 ) {  //Elimina efeito Bouncing
-     if (!estadoBotao1 && estadoBotao1Ant) {
+    //obtem a string do payload recebido
+    for(int i = 0; i < length; i++) 
+    {
+       char c = (char)payload[i];
+       msg += c;
+    }
 
-        //Botao Apertado     
-        MQTT.publish(TOPIC_PUBLISH, "1");
-        Serial.println("Botao1 APERTADO. Payload enviado.");
-        
-        debounceBotao1 = millis();
-     } else if (estadoBotao1 && !estadoBotao1Ant) {
+    if (msg == "0") {
+       digitalWrite(pinLED1, LOW);
+    }
 
-        //Botao Solto
-        MQTT.publish(TOPIC_PUBLISH, "0");
-        Serial.println("Botao1 SOLTO. Payload enviado.");
-        
-        debounceBotao1 = millis();
-     }
-     
-  }
-  estadoBotao1Ant = estadoBotao1;
+    if (msg == "1") {
+       digitalWrite(pinLED1, HIGH);
+    }
 }
-
